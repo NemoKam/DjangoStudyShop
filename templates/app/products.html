@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'app/favicon.svg' %}">
+    <link rel="stylesheet" href="{% static 'app/css/list.css' %}">
+    <script src="{% static 'app/js/products.js' %}" defer ></script>
+    <title>List</title>
+</head>
+<body>
+    {% include "header.html" %}
+    <div class="products">
+    {% for product in list %}
+        {% if product.active %}
+            <a class="product" href="products/{{ product.id }}" id="{{ product.id }}">
+                <p class="id">{{ product.id }}</p>
+                <p class="name">{{ product.title }}</p>
+                <p class="name">{{ product.description }}</p>
+                {% for image in images %}
+                {% if image.to_product.id == product.id %}
+                    <img src="../media/{{ image.image }}" alt="fe23h832h8h;few" class="main"> 
+                {% endif %}
+                {% endfor %}  
+                <p class="name">{{ product.in_shop }}</p>
+                <div>
+                    {% for category in product.in_category.all %}
+                        <p class="name">{{ category.title }}</p>
+                    {% endfor %}
+                </div>
+                <p class="name">{{ product.amount }}</p>
+                <p class="name">{{ product.price }}</p>
+            </a>
+        {% endif %}
+    {% endfor %}
+    </div>
+    {% include "footer.html" %}
+    {% csrf_token %}
+</body>
+</html>

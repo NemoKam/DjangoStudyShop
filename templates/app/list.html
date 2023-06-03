@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'app/favicon.svg' %}">
+    <link rel="stylesheet" href="{% static 'app/css/list.css' %}">
+    <script src="{% static 'app/js/list.js' %}" defer ></script>
+    <title>List</title>
+</head>
+<body>
+    {% include "header.html" %}
+    {% if type == "shop" %}
+    {% for i in list %}
+        <div class="shop">
+            <h2>{{ i.id }}</h2>
+            <p class="name">{{ i.title }}</p>
+            <p class="name">{{ i.description }}</p>
+            <img src="{{ i.imageUrl }}" alt="">
+        </div>
+    {% endfor %}
+    {% endif %}
+    {% if type == "category" %}
+    {% for i in list %}
+        <div class="category">
+            <p>TITLE:</p>
+            <p class="name">{{ i.title }}</p>
+            <p>DESCRIPTION:</p>
+            <p class="name">{{ i.description }}</p>
+            <div>
+                <p>CATEGORY:</p>
+                {% for elem in i.categoryin.all %}
+                    <p>{{ elem.title }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+    {% endif %}
+    {% if type == "product" %}
+    {% for i in list %}
+        {% if i.active %}
+            <a class="product" href="products/{{ i.id }}">
+                <p class="id">{{ i.id }}</p>
+                <p class="name">{{ i.title }}</p>
+                <p class="name">{{ i.description }}</p>
+                {% for img in images %}
+                {% if img.toproduct.id == i.id %}
+                    <img src="media/{{ img.image }}" alt="" class="main"> 
+                {% endif %}
+                {% endfor %}  
+                <p class="name">{{ i.whshop }}</p>
+                <div>
+                    {% for elem in i.whcategory.all %}
+                        <p class="name">{{ elem.title }}</p>
+                    {% endfor %}
+                </div>
+                <p class="name">{{ i.amount }}</p>
+                <p class="name">{{ i.price }}</p>
+            </a>
+        {% endif %}
+    {% endfor %}
+    {% endif %}
+    {% include "footer.html" %}
+    {% csrf_token %}
+</body>
+</html>

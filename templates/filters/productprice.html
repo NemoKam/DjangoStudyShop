@@ -1,0 +1,48 @@
+<details data-filter-title="price" open>
+    <summary>
+        By price
+    </summary>
+    <ul>
+        <li>
+            <input type="number" name="minprice" id="minprice" placeholder="minprice">
+            <input type="number" name="maxprice" id="maxprice" placeholder="maxprice">
+            <button onclick="pricerange()">Find</button>
+            <button onclick="clearrange()">Clear Price</button>
+        </li>
+    </ul>
+</details>
+<script>
+    const params = new URLSearchParams(window.location.search)
+    try {
+        document.querySelector('#minprice').value = params.get('price').split("n")[0]
+    } catch {}
+    try {
+        document.querySelector('#maxprice').value = params.get('price').split("n")[1]
+    } catch {}
+    function pricerange () {
+        const minprice = document.querySelector('#minprice').value
+        const maxprice = document.querySelector('#maxprice').value
+        if (window.location.search.replace('?','') != window.location.search) {
+            if (window.location.search.replace('price=','') != window.location.search) {
+                parms = params.get('price').split("n")
+                url = window.location.search.replace('price='+parms[0]+'n'+parms[1],'price='+minprice+'n'+maxprice)
+            } else {
+                url = window.location.search + '&price='+minprice+'n'+maxprice
+            }
+        } else {
+            url = '?price='+minprice+'n'+maxprice
+        }
+        document.location.href = url
+    }
+    function clearrange() {
+        parms = params.get('price').split("n")
+        if (window.location.search.replace('?price','').replace('&price','') != window.location.search) {
+            console.log(parms[0], parms[1]);
+            url = window.location.search.replace('?price='+parms[0]+'n'+parms[1],'').replace('&price='+parms[0]+'n'+parms[1],'')
+        }
+        if (url == "") {
+            url = "?"
+        }
+        document.location.href = url
+    }
+</script>

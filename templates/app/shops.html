@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'app/favicon.svg' %}">
+    <link rel="stylesheet" href="{% static 'app/css/list.css' %}">
+    <script src="{% static 'app/js/shops.js' %}" defer ></script>
+    <title>Shops</title>
+</head>
+<body>
+    {% include "header.html" %}
+    <div class="shops">
+    {% for shop in list %}
+        <a href="shops/{{ shop.id }}" id="{{ shop.id }}" class="shop">
+            <h2>{{ shop.id }}</h2>
+            <p class="name">{{ shop.title }}</p>
+            <p class="name">{{ shop.description }}</p>
+            <img src="../media/{{ shop.image_url }}" alt="">
+        </a>
+    {% endfor %}
+    </div>
+    {% include "footer.html" %}
+    {% csrf_token %}
+</body>
+</html>

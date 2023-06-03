@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'app/favicon.svg' %}">
+    <link rel="stylesheet" href="{% static 'app/css/list.css' %}">
+    <script src="{% static 'app/js/products.js' %}" defer ></script>
+    <title>Profile</title>
+</head>
+<body>
+    {% include "header.html" %}
+    <div class="profile">
+        <img src="../media/{{ profile.avatar }}" alt="">
+        <h1 class="name">{{ profile.name }}</h1>
+        <h2 class="surname">{{ profile.surname }}</h2>
+        <h2 class="balance">{{ profile.balance }}</h2>
+    </div>
+    {% include "footer.html" %}
+</body>
+</html>

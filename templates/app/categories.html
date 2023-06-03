@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'app/favicon.svg' %}">
+    <link rel="stylesheet" href="{% static 'app/css/list.css' %}">
+    <script src="{% static 'app/js/categories.js' %}" defer ></script>
+    <title>List</title>
+</head>
+<body>
+    {% include "header.html" %}
+    <div class="categories">
+    {% for category in list %}
+        <a href="categories/{{ i.id }}" id="{{ i.id }}" class="category">
+            <p class="name">{{ i.title }}</p>
+            <p class="name">{{ i.description }}</p>
+            <div>
+                {% for category_in_category in category.in_category.all %}
+                    <p>{{ category_in_category.id }}</p>
+                    <p>{{ category_in_category.title }}</p>
+                {% endfor %}
+            </div>
+        </a>
+    {% endfor %}
+    </div>
+    {% include "footer.html" %}
+    {% csrf_token %}
+</body>
+</html>

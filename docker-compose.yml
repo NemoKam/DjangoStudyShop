@@ -1,0 +1,58 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    command: bash -c "python /code/manage.py makemigrations --no-input && python /code/manage.py migrate && python /code/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+
+  celery_worker:
+    build: .
+    image: app_celery_worker
+    command: celery -A kazan_express worker -l INFO
+    volumes:
+      - .:/code
+    depends_on:
+      - redis
+      - db
+
+  celery_beat:
+    build: .
+    image: app_celery_beat
+    command: celery -A kazan_express beat -l INFO
+    volumes:
+      - .:/code
+    depends_on:
+      - redis
+      - db
+
+  flower:
+    build: .
+    image: app_celery_flower
+    command: celery -A kazan_express --broker="redis://redis:6379/0" flower
+    volumes:
+      - .:/code
+    ports:
+      - 5555:5555
+    depends_on:
+      - redis
+      - db
+
+volumes:
+  postgres_data:
